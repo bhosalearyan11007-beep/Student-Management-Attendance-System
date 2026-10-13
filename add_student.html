@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Student</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="form-container">
+    <div class="card">
+        <h1>Add Student</h1>
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        <form method="post">
+            <label>Full Name *</label>
+            <input name="name" required>
+
+            <label>Roll Number *</label>
+            <input name="roll_no" required>
+
+            <label>Course *</label>
+            <input name="course" placeholder="e.g. B.Sc CS" required>
+
+            <label>Email</label>
+            <input type="email" name="email">
+
+            <label>Phone</label>
+            <input name="phone">
+
+            <div class="form-actions">
+                <button class="btn" type="submit">Save Student</button>
+                <a class="secondary" href="{{ url_for('index') }}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

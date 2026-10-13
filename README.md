@@ -1,45 +1,24 @@
-# Student-Management-Attendance-System
-A Flask and SQLite web application for student management and subject-wise attendance tracking.
+# Student Management & Attendance System
 
-
-## Project Overview
-A web-based college mini-project for managing student records and tracking subject-wise attendance.
+College mini-project built with Python Flask, SQLite, HTML and CSS.
 
 ## Features
-- Add, view, edit and delete student records
-- Subject-wise attendance management
-- Mark students Present or Absent
-- View attendance records and reports
-- Calculate attendance percentages where supported
+- Add, view, search, edit and delete students
+- Mark attendance by subject and date
+- Fixed subjects: Ethical Hacking, STQA, Numerical Methods, IKS, AI, Cyber Security
+- Attendance history with date and subject filters
+- Student-wise attendance report
+- Subject-wise attendance summary
+- Attendance percentage calculation
 
-## Subjects
-- Ethical Hacking
-- STQA
-- Numerical Methods
-- IKS
-- Artificial Intelligence
-- Cyber Security
+## Run the project
+```bash
+python -m venv venv
+venv\\Scripts\\Activate.ps1
+pip install -r requirements.txt
+python app.py
+```
+Open `http://127.0.0.1:5000` in a browser.
 
-## Technologies Used
-- Python
-- Flask
-- SQLite
-- HTML
-- CSS
-
-## Project Structure
-- `app.py` — Flask application
-- `requirements.txt` — Python dependencies
-- `templates/` — HTML templates
-- `static/` — CSS and static assets
-
-## How to Run
-1. Install Python 3.
-2. Install the required packages:
-   `python -m pip install -r requirements.txt`
-3. Run the application:
-   `python app.py`
-4. Open the local address shown in the terminal.
-
-## Academic Project
-Developed as a college mini-project.
+## Important
+The new attendance database uses `student + subject + date` as the unique attendance combination. If you already have an older `students.db` from the previous version, back it up before running the upgraded version. Old attendance records from the previous subject-less version are not assigned to a subject automatically.

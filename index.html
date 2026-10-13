@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management & Attendance System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <header class="topbar">
+        <div>
+            <h1>Student Management & Attendance System</h1>
+            <p>College mini-project using Python Flask and SQLite</p>
+        </div>
+        <nav>
+            <a href="{{ url_for('index') }}">Dashboard</a>
+            <a href="{{ url_for('attendance') }}">Attendance</a>
+            <a href="{{ url_for('report') }}">Reports</a>
+            <a class="btn" href="{{ url_for('add_student') }}">+ Add Student</a>
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <section class="stats">
+        <div class="stat-card"><span>Total Students</span><strong>{{ total_students }}</strong></div>
+        <div class="stat-card"><span>Attendance Records</span><strong>{{ total_records }}</strong></div>
+        <div class="stat-card"><span>Total Present</span><strong>{{ present_records }}</strong></div>
+        <div class="stat-card"><span>Present Today</span><strong>{{ today_present }}</strong></div>
+    </section>
+
+    <div class="quick-actions">
+        <a class="action-card" href="{{ url_for('add_student') }}"><b>+ Add Student</b><span>Create a new student record</span></a>
+        <a class="action-card" href="{{ url_for('attendance') }}"><b>✓ Mark Attendance</b><span>Record today's or any date's attendance</span></a>
+        <a class="action-card" href="{{ url_for('report') }}"><b>📊 Attendance Report</b><span>View percentage by student</span></a>
+        <a class="action-card" href="{{ url_for('attendance_history') }}"><b>🗓 Attendance History</b><span>See saved attendance records</span></a>
+    </div>
+
+    <form class="search" action="{{ url_for('search') }}" method="get">
+        <input type="text" name="q" value="{{ q or '' }}" placeholder="Search by name, roll no, course, email or phone">
+        <button type="submit">Search</button>
+        <a class="secondary" href="{{ url_for('index') }}">Clear</a>
+    </form>
+
+    <div class="card">
+        <div class="section-heading">
+            <div><h2>Student List</h2><p>Manage student information from one place.</p></div>
+            <a class="btn" href="{{ url_for('add_student') }}">+ Add Student</a>
+        </div>
+        <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Name</th><th>Roll No</th><th>Course</th><th>Email</th><th>Phone</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+            {% for s in students %}
+                <tr>
+                    <td>{{ s.id }}</td><td>{{ s.name }}</td><td>{{ s.roll_no }}</td><td>{{ s.course }}</td>
+                    <td>{{ s.email or '-' }}</td><td>{{ s.phone or '-' }}</td>
+                    <td class="actions">
+                        <a class="edit" href="{{ url_for('edit_student', student_id=s.id) }}">Edit</a>
+                        <form method="post" action="{{ url_for('delete_student', student_id=s.id) }}" onsubmit="return confirm('Delete this student and their attendance records?');">
+                            <button class="delete" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="7" class="empty">No students found. Add your first student.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+<footer>Student Management & Attendance System • College Mini-Project</footer>
+</body>
+</html>

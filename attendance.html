@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Attendance</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body><div class="container">
+<header class="topbar"><div><h1>Mark Attendance</h1><p>Select a subject, date and record Present/Absent.</p></div>
+<nav><a href="{{ url_for('index') }}">Dashboard</a><a href="{{ url_for('report') }}">Reports</a><a href="{{ url_for('attendance_history') }}">History</a></nav></header>
+{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}{% endif %}{% endwith %}
+<div class="card"><form method="post">
+<div class="form-grid"><div><label for="subject_id"><b>Subject</b></label><select id="subject_id" name="subject_id" required>{% for subject in subjects %}<option value="{{ subject.id }}" {% if subject.id == selected_subject_id %}selected{% endif %}>{{ subject.subject_name }}</option>{% endfor %}</select></div>
+<div><label for="attendance_date"><b>Attendance Date</b></label><input id="attendance_date" type="date" name="attendance_date" value="{{ selected_date }}" required></div></div>
+<div class="date-row"><button class="btn" type="submit">Save Attendance</button><a class="secondary" href="{{ url_for('attendance_history', attendance_date=selected_date, subject_id=selected_subject_id) }}">View History</a></div>
+<p class="hint">Saving again for the same student, subject and date updates the attendance status.</p>
+{% if students %}<div class="table-wrap"><table><thead><tr><th>Roll No</th><th>Name</th><th>Course</th><th>Status</th></tr></thead><tbody>
+{% for student in students %}{% set current = existing_map.get(student.id, 'Present') %}<tr><td>{{ student.roll_no }}</td><td>{{ student.name }}</td><td>{{ student.course }}</td><td><select name="student_{{ student.id }}"><option value="Present" {% if current == 'Present' %}selected{% endif %}>Present</option><option value="Absent" {% if current == 'Absent' %}selected{% endif %}>Absent</option></select></td></tr>{% endfor %}
+</tbody></table></div>{% else %}<div class="empty-box">No students available. <a href="{{ url_for('add_student') }}">Add a student first.</a></div>{% endif %}
+</form></div></div></body></html>
